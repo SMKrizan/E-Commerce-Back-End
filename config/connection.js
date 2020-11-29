@@ -2,13 +2,9 @@
 const Sequelize = require('sequelize');
 
 // for passing in protected information to connect to MySQL 
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config();
 
 // let sequelize;
-
-console.log(process.env.DB_USER);
-console.log(process.env.DB_NAME);
-console.log(process.env.DB_PWD);
 
 // creates connection to database by importing base Sequelize class and passing MySqL information to it 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PWD, {
