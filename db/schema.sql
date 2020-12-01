@@ -1,6 +1,6 @@
 -- DROP DATABASE
-DROP DATABASE IF EXISTS bumbershootMagic;
+DROP DATABASE IF EXISTS bumbershootmagic;
 
 -- CREATE DATABASE
-CREATE DATABASE bumbershootMagic;
+CREATE DATABASE bumbershootmagic;
 

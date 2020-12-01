@@ -7,19 +7,18 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 router.get('/', (req, res) => {
   // access 'Product' model and run 'findAll()' method on database
   Product.findAll({
-    attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
-    order: [['product_name', 'DESC']],
+    attributes: ['id', 'product_name', 'price', 'stock'],
     // includes associated Category and Tag data
     include: [
       {
         model: Category,
-        attributes: ['id', 'category_name'],
+        attributes: ['category_name'],
       },
       {
         model: Tag,
-        attributes: ['id', 'tag_name'],
+        attributes: ['tag_name'],
         through: ProductTag,
-        as: 'associated_tags'
+        // as: 'tags'
       }
     ]
   })
@@ -39,19 +38,20 @@ router.get('/:id', (req, res) => {
     where: {
       id: req.params.id
     },
-    attributes: ['product_name', 'id'],
+    attributes: ['id', 'product_name', 'price', 'stock'],
     // includes associated Category and Tag data
     include: [
       {
         model: Category,
-        attributes: ['id', 'category_name'],
+        attributes: ['category_name'],
       },
-      {
-        model: Tag,
-        attributes: ['id', 'tag_name'],
-        through: ProductTag,
-        as: 'associated_tags'
-      }
+      // {
+      //   model: Tag,
+      //   attributes: ['tag_name'],
+      //   through: ProductTag,
+      //   // must match 'as' within api/index
+      //   // as: 'tags'
+      // }
     ]
   })
   // if there are no results from the query, a related response is returned
