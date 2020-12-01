@@ -5,7 +5,7 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // get all products
 router.get('/', (req, res) => {
-  // find all products
+  // access 'Product' model and run 'findAll()' method on database
   Product.findAll({
     attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
     order: [['product_name', 'DESC']],
@@ -23,7 +23,9 @@ router.get('/', (req, res) => {
       }
     ]
   })
+  // data resulting from query is returned from database as JSON response
   .then(dbProductData => res.json(dbProductData))
+  // if error sends error message as JSON response 
   .catch(err => {
     console.log(err);
     res.status(500).json(err);
@@ -32,7 +34,7 @@ router.get('/', (req, res) => {
 
 // get one product
 router.get('/:id', (req, res) => {
-  // find a single product by its `id`
+  // find a single product by passing `id` as an argument to the 'findOne()' method
   Product.findOne({
     where: {
       id: req.params.id
@@ -52,6 +54,7 @@ router.get('/:id', (req, res) => {
       }
     ]
   })
+  // if there are no results from the query, a related response is returned
   .then(dbProductData => {
     if (!dbProductData) {
       res.status(404).json({ message: 'There are no products with this id.' });
@@ -65,7 +68,7 @@ router.get('/:id', (req, res) => {
   });
 });
 
-// create new product
+// add a new product to the database
 router.post('/', (req, res) => {
   /* req.body should look like this...
     {
@@ -75,6 +78,7 @@ router.post('/', (req, res) => {
       tagIds: [1, 2, 3, 4]
     }
   */
+ // inserts new data using Sequelize 'create()' method and passing in key/value pairs; keys are defined in the 'Product' model and values are returned from req.body
   Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
@@ -97,7 +101,7 @@ router.post('/', (req, res) => {
     });
 });
 
-// update product
+// updates existing product with 'update()' method using both 'req.body' (creates/provides new data) and 'req.params' (indicates where new data should be used)
 router.put('/:id', (req, res) => {
   // update product data
   Product.update(req.body, {
@@ -134,13 +138,31 @@ router.put('/:id', (req, res) => {
     })
     .then((updatedProductTags) => res.json(updatedProductTags))
     .catch((err) => {
-      // console.log(err);
+      console.log(err);
       res.status(400).json(err);
     });
 });
 
+// delete a product from the database
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
+  Product.destroy({
+    // identifier indicates exactly which object to delete from the database
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(dbProductData => {
+    if (!dbProductData) {
+      res.status(404).json({ message: 'There are no products with that id.' })
+      return;
+    }
+    res.json(dbProductData);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
 });
 
 module.exports = router;
