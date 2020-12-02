@@ -22,13 +22,13 @@ router.get('/', (req, res) => {
       }
     ]
   })
-  // data resulting from query is returned from database as JSON response
-  .then(dbProductData => res.json(dbProductData))
-  // if error sends error message as JSON response 
-  .catch(err => {
-    console.log(err);
-    res.status(500).json(err);
-  });
+    // data resulting from query is returned from database as JSON response
+    .then(dbProductData => res.json(dbProductData))
+    // if error sends error message as JSON response 
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 // get one product
@@ -45,27 +45,25 @@ router.get('/:id', (req, res) => {
         model: Category,
         attributes: ['category_name'],
       },
-      // {
-      //   model: Tag,
-      //   attributes: ['tag_name'],
-      //   through: ProductTag,
-      //   // must match 'as' within api/index
-      //   // as: 'tags'
-      // }
+      {
+        model: Tag,
+        attributes: ['tag_name'],
+        through: ProductTag,
+      }
     ]
   })
-  // if there are no results from the query, a related response is returned
-  .then(dbProductData => {
-    if (!dbProductData) {
-      res.status(404).json({ message: 'There are no products with this id.' });
-      return;
-    }
-    res.json(dbProductData);
-  })
-  .catch(err => {
-    console.log(err);
-    res.status(500).json(err);
-  });
+    // if there are no results from the query, a related response is returned
+    .then(dbProductData => {
+      if (!dbProductData) {
+        res.status(404).json({ message: 'There are no products with this id.' });
+        return;
+      }
+      res.json(dbProductData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 // add a new product to the database
@@ -78,10 +76,15 @@ router.post('/', (req, res) => {
       tagIds: [1, 2, 3, 4]
     }
   */
- // inserts new data using Sequelize 'create()' method and passing in key/value pairs; keys are defined in the 'Product' model and values are returned from req.body
-  Product.create(req.body)
+  // inserts new data using Sequelize 'create()' method and passing in key/value pairs; keys are defined in the 'Product' model and values are returned from req.body
+  Product.create({
+    product_name: req.body.product_name,
+    price: req.body.price,
+    stock: req.body.stock,
+    tagIds: req.body.tagIds
+  })
     .then((product) => {
-      // if there's product tags, we need to create pairings to bulk create in the ProductTag model
+      // if there are product tags, we need to create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
         const productTagIdArr = req.body.tagIds.map((tag_id) => {
           return {
@@ -152,17 +155,17 @@ router.delete('/:id', (req, res) => {
       id: req.params.id
     }
   })
-  .then(dbProductData => {
-    if (!dbProductData) {
-      res.status(404).json({ message: 'There are no products with that id.' })
-      return;
-    }
-    res.json(dbProductData);
-  })
-  .catch(err => {
-    console.log(err);
-    res.status(500).json(err);
-  });
+    .then(dbProductData => {
+      if (!dbProductData) {
+        res.status(404).json({ message: 'There are no products with that id.' })
+        return;
+      }
+      res.json(dbProductData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 module.exports = router;
