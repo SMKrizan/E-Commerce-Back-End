@@ -7,25 +7,25 @@ WHEN I enter schema and seed commands
 THEN a development database is created and is seeded with test data
 WHEN I enter the command to invoke the application
 THEN my server is started and the Sequelize models are synced to the MySQL database
-WHEN I open API GET routes in Insomnia Core for categories, products, or tags
-THEN the data for each of these routes is displayed in a formatted JSON
+
 WHEN I test API POST, PUT, and DELETE routes in Insomnia Core
 THEN I am able to successfully create, update, and delete data in my database
 Your walkthrough video should also show the POST, PUT, and DELETE routes for products and tags being tested in Insomnia Core.
 
 ## Description
-This application is a content management system designed to manage a company's employee database from the command line.
+This application represents the back end of an e-commerce site using Sequelize to interact with a MySQL database.
 
 
 ### Languages used:
 - MySQL
-- Node
+- Node.js
 - ES6
 - Javascript
 
 ### NPM Packages:
 - MySQL2
 - Sequelize
+- Express
 - dotenv
 
 
@@ -37,8 +37,11 @@ This application is a content management system designed to manage a company's e
 
 
 ## <a name="instructions-for-installation">Instructions for Installation</a>:
-1. clone onBase repository
+1. clone bumbershootMagic repository
+1. enter your MySQL user name and password into the .env file
 1. install Node.js 'npm init --y'
+1. from the terminal, run 'npm start' to instantiate the server and trigger creation of the database
+1. close the server, if needed, and again from the terminal, run "npm run seed"
 1. from the terminal, run 'npm start'
 
 
