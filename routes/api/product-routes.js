@@ -7,23 +7,18 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 router.get('/', (req, res) => {
   // access 'Product' model and run 'findAll()' method on database
   Product.findAll({
-    attributes: ['id', 'product_name', 'price', 'stock'],
+    // attributes: ['id', 'product_name', 'price', 'stock'],
     // includes associated Category and Tag data
     include: [
-      {
-        model: Category,
-        attributes: ['category_name'],
-      },
+      Category,
       {
         model: Tag,
-        attributes: ['tag_name'],
         through: ProductTag,
-        // as: 'tags'
-      }
-    ]
+      },
+    ],
   })
     // data resulting from query is returned from database as JSON response
-    .then(dbProductData => res.json(dbProductData))
+    .then((dbProductData) => res.json(dbProductData))
     // if error sends error message as JSON response 
     .catch(err => {
       console.log(err);
@@ -77,18 +72,8 @@ router.post('/', (req, res) => {
     }
   */
   // inserts new data using Sequelize 'create()' method and passing in key/value pairs; keys are defined in the 'Product' model and values are returned from req.body
-  // Product.create(req.body)
-  Product.create({
-    product_name: req.body.product_name,
-    price: req.body.price,
-    stock: req.body.stock,
-    tagIds: req.body.tagIds
-  })
+  Product.create(req.body)
     .then((product) => {
-      // if there are product tags, we need to create pairings to bulk create in the ProductTag model
-      console.log('req.body1: ', req.body)
-      console.log('req.body.tagIds.: ', req.body.tagIds)
-      console.log('req.body.tagIds.length: ', req.body.tagIds.length)
       if (req.body.tagIds.length) {
         const productTagIdArr = req.body.tagIds.map((tag_id) => {
           return {
