@@ -3,4 +3,3 @@ DROP DATABASE IF EXISTS bumbershootmagic;
 
 -- CREATE DATABASE
 CREATE DATABASE bumbershootmagic;
-
