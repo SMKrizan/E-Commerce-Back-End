@@ -1,4 +1,4 @@
-# bumbershootMagic: E-commerce Back End Starter Code
+# bumbershootMagic: E-commerce Back End
 
 
 WHEN I enter schema and seed commands
