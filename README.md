@@ -35,7 +35,7 @@ This application represents the back end of an e-commerce site using Sequelize t
 
 
 ## <a name="usage">Usage</a>:
-[![Application Screenshot](./assets/Walkthrough-screenshot.png)*Click the image-link to access a video walkthrough of the application:*]("https://drive.google.com/file/d/1JCVegcQxAKZSh0VNObS1mEwHjHBLnmZ5/view")
+[![Application Screenshot](./assets/Walkthrough-screenshot.png)*Click the image-link to access a video walkthrough of the application:*](https://drive.google.com/file/d/1JCVegcQxAKZSh0VNObS1mEwHjHBLnmZ5/view)
 
     
 ## <a name="contribution-guidelines">Contributions</a>:
